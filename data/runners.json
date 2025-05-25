@@ -1,0 +1,32 @@
+[
+  {
+    "name": "Eliud Kipchoge",
+    "cadence": 180,
+    "heel_strike": 0.2,
+    "vertical_oscillation": 6.5
+  },
+  {
+    "name": "Baron Harkonnen",
+    "cadence": 60,
+    "heel_strike": 0.9,
+    "vertical_oscillation": 20.0
+  },
+  {
+    "name": "Cheetah",
+    "cadence": 250,
+    "heel_strike": 0.1,
+    "vertical_oscillation": 8.0
+  },
+  {
+    "name": "Shalane Flanagan",
+    "cadence": 185,
+    "heel_strike": 0.3,
+    "vertical_oscillation": 7.0
+  },
+  {
+    "name": "Cow",
+    "cadence": 50,
+    "heel_strike": 0.6,
+    "vertical_oscillation": 15.0
+  }
+]
