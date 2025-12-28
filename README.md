@@ -1,197 +1,255 @@
-# 🧠 30 Minute Vector Database
+# 🎯 RAG Workshop Series - Part 1: Vector Fundamentals
 
-A beginner-friendly command-line demo that builds a vector database from scratch and compares runners and animals based on biomechanics features.
-
-This project is designed to help you understand how vector embeddings work in a fun, fast, and visualizable way.
-
----
-
-## 🏃‍♂️ Project Overview
-
-Each entity (runner or creature) is represented by a vector of 3 features:
-
-- **Cadence**: Steps per minute
-- **Heel Strike**: A value from 0 (toe-first) to 1 (heel-first) 
-- **Vertical Oscillation**: How much the torso moves up and down, in cm
-
-We embed these features into 3D space and visualize how different runners cluster together.
+> **📚 This is Part 1 of a 3-part workshop series on Retrieval-Augmented Generation**
+> - **Part 1** (You are here): Vector embeddings & visualization
+> - [Part 2: RAG Basics](https://github.com/12mv2/workshop-rag-2-retrieval) - Stop LLM hallucinations with retrieval
+> - [Part 3: Production Pipeline](https://github.com/12mv2/workshop-rag-3-production) - Semantic search at scale
 
 ---
 
-## 🚀 Workshop Commands (In Order)
+## 🧠 What You'll Learn
 
-### 1. Setup
+**How do computers understand "similarity"?**
+
+See how runner biomechanics becomes vectors that automatically cluster similar gaits together—no manual rules needed. 
+
+**💡 Core Insight:** Similar data → Similar vectors → Automatic clustering
+
+---
+
+## 🚀 Quick Start
+
 ```bash
-# Clone this repo
-git clone https://github.com/12mv2/30min-vector-db.git
-cd 30min-vector-db
-
-# Create virtual environment (recommended)
-python3 -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-
-# Install dependencies
+# 1. Clone and setup
+git clone https://github.com/12mv2/workshop-rag-1-vectors.git
+cd workshop-rag-1-vectors
+python3 -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
+
+# 2. Run the visualization
+python app.py
 ```
 
-### 2. Explore the Data
-```bash
-# Look at our runner data
-cat data/runners.json
-
-# Or use Python to explore
-python -c "import json; print(json.dumps(json.load(open('data/runners.json')), indent=2))"
-```
-
-### 3. Vector Visualization (Phase 1: Understanding Vectors)
-```bash
-# View raw vectors - see the actual feature values in 3D
-python app.py --plot raw
-
-# View normalized vectors - everything scaled to 0-1 range
-python app.py --plot normalized
-``` 
-
-### 4. Feature Engineering (Phase 2: Weighting Features) 
-```bash
-# Apply custom weights to features
-python app.py --plot weighted --weights 1.0 2.0 0.5
-
-# Weight cadence heavily, de-emphasize vertical oscillation
-python app.py --plot weighted --weights 3.0 1.0 0.1
-
-# Make heel strike the dominant feature
-python app.py --plot weighted --weights 0.5 5.0 0.5
-
-# Equal weights (same as normalized)
-python app.py --plot weighted --weights 1.0 1.0 1.0
-```
-
-### 5. Production Vector Database (Phase 3: Scaling Up)
-```bash
-# Set up environment variables for Pinecone
-echo "PINECONE_API_KEY=your-key-here" > .env
-echo "PINECONE_INDEX=runners-index" >> .env
-
-# Upload vectors to Pinecone cloud database
-python pinecone_upload.py
-
-# Query the Pinecone database to find similar runners
-python query_example.py
-```
+**That's it!** A 3D plot appears showing how runners and animals cluster in vector space.
 
 ---
 
-## 📁 Folder Structure
+## 📊 What You'll See
 
-```
-30min-vector-db/
-├── data/
-│   └── runners.json              # Input dataset
-├── db/
-│   └── vector_db.py              # Simple in-memory "database"
-├── search/
-│   └── normalize.py              # Feature scaling utilities
-├── app.py                        # Main visualization tool
-├── pinecone_upload.py            # Upload vectors to Pinecone
-├── query_example.py             # Query Pinecone database
-├── requirements.txt              # Python dependencies
-├── .env                          # Environment variables (create this)
-├── .gitignore
-└── README.md
-```
+### The Visualization
 
----
+A 3D scatter plot with 9 entities as points in space: 
 
-## 🎯 Workshop Learning Path
+**🏃 Elite Distance Runners** (tight blue cluster):
+- Eliud Kipchoge (marathon legend)
+- Mo Farah (distance specialist)
+- Kenenisa Bekele (10K/marathon)
 
-### Phase 1: Understanding Vectors (10 minutes)
-**Goal**: See data as points in space
-1. `python app.py --plot raw` - visualize actual feature values
-2. `python app.py --plot normalized` - understand why normalization matters
-3. **Key insight**: Baron Harkonnen vs elite runners are in completely different regions!
+**⚡ Sprinter** (nearby, distinct):
+- Usain Bolt (explosive power)
 
-### Phase 2: Feature Engineering (10 minutes)  
-**Goal**: Learn how weighting changes vector relationships
-1. `python app.py --plot weighted --weights 3.0 1.0 0.1` - make cadence dominant
-2. `python app.py --plot weighted --weights 0.5 5.0 0.5` - make heel strike dominant
-3. **Key insight**: Different weights = different clustering patterns
+**🐾 Animals** (scattered):
+- Cheetah (speed demon)
+- Horse (heel-heavy gait)
+- Kangaroo (extreme hopper - way off on its own!)
 
-### Phase 3: Production Scaling (10 minutes)
-**Goal**: Move from toy example to production vector database
-1. Set up Pinecone account and API keys
-2. `python pinecone_upload.py` - upload vectors to cloud
-3. `python query_example.py` - perform similarity search at scale
-4. **Key insight**: Now you can search millions of vectors instantly!
+**🎭 For Fun**:
+- Baron Harkonnen (definitely not a runner 😅)
 
 ---
 
-## 🤖 Tech Stack
+## 💡 The "Aha!" Moment
 
-- **Core Demo**: Python 3.11 + matplotlib (visualization only)
-- **Production**: Pinecone (cloud vector database)
-- **Dependencies**: minimal (just what's needed)
+**Look at the clusters:**
+
+✅ **Elite marathoners group together** - Similar gaits (cadence ~185, low heel strike, minimal bounce)  
+✅ **Usain Bolt is nearby but separate** - Sprinters use different biomechanics  
+✅ **Kangaroo is in its own universe** - Hopping is fundamentally different (extreme vertical oscillation)  
+✅ **You didn't program these categories** - Similarity emerged from the math! 
+
+**This is the foundation of RAG. ** Instead of manually coding rules, vectors capture relationships automatically.
 
 ---
 
-## 🧪 Example Output
+## 🧠 How It Works
 
-```bash
-$ python app.py --plot normalized
+### The Data
 
-=== NORMALIZED VECTORS (0-1 SCALE) ===
-Eliud Kipchoge: ['0.650', '0.200', '0.025']
-Baron Harkonnen: ['0.050', '0.900', '0.700'] 
-Cheetah: ['1.000', '0.100', '0.100']
-Shalane Flanagan: ['0.675', '0.300', '0.050']
-Cow: ['0.000', '0.600', '0.450']
+Each entity has 3 biomechanics features: 
 
-Plot displayed: Normalized Vectors (0-1 scale)
+```python
+Eliud Kipchoge:
+  Cadence: 185 steps/min
+  Heel Strike: 0.2 (0=toe, 1=heel)
+  Vertical Oscillation: 6.2 cm
+
+Kangaroo:
+  Cadence: 70 hops/min
+  Heel Strike: 0.0 (pure toe)
+  Vertical Oscillation: 35.0 cm
 ```
 
+### The Process
+
+1. **Normalize to 0-1 scale** - Prevents big numbers from dominating
+2. **Create 3D vectors** - [cadence, heel_strike, oscillation]
+3. **Plot in space** - Similar gaits = nearby points
+
+**Why normalization matters:**
+- ❌ Without:  Cadence (185) drowns out heel strike (0.2)
+- ✅ With: All features contribute equally
+
 ---
 
-## 🧠 Key Learning Goals
+## 🎯 Why This Matters for RAG
 
-- **Embeddings**: How to convert real-world features into vectors
-- **Normalization**: Why feature scaling matters for fair comparison
-- **Feature Weighting**: How to emphasize important characteristics  
-- **Dimensionality**: Visualizing high-dimensional data
-- **Production**: Scaling from toy examples to real vector databases
+RAG systems need to find relevant information quickly: 
+
+```
+User asks: "How do elite marathoners run?"
+        ↓
+Convert question to vector
+        ↓
+Find nearest neighbors (Kipchoge, Farah, Bekele)
+        ↓
+Feed context to LLM
+        ↓
+Get accurate, grounded answer
+```
+
+**You just learned step 1:** How data becomes searchable vectors! 
+
+---
+
+## 🔧 Optional: Pinecone Setup (For Part 3)
+
+Part 3 uses Pinecone (cloud vector database). Set it up now to save time later: 
+
+<details>
+<summary><b>Click to expand Pinecone setup (5 minutes)</b></summary>
+
+### Quick Setup
+
+1. **Sign up:** Visit [pinecone.io](https://pinecone.io) → Create free account
+
+2. **Create index:**
+   - Click "Create Index"
+   - Name: `runners-index`
+   - Dimensions: `3`
+   - Metric: `cosine`
+   - Click "Create Index"
+
+3. **Get API key:**
+   - Click "API Keys" in sidebar
+   - Copy your API key
+
+4. **Add to `.env` file:**
+   ```bash
+   echo "PINECONE_API_KEY=your-key-here" >> .env
+   echo "PINECONE_INDEX=runners-index" >> .env
+   ```
+
+✅ **Done!** You won't use it in Parts 1-2, but it'll be ready for Part 3.
+
+**Don't want to set up now?** No problem - Part 1 works completely without it. 
+
+</details>
+
+---
+
+## ➡️ What's Next? 
+
+### Continue the Series
+
+**[Part 2: RAG Basics →](https://github.com/12mv2/workshop-rag-2-retrieval)**  
+Now that you understand vectors, learn how to use retrieval to stop LLM hallucinations.  Build your first RAG system. 
+
+**[Part 3: Production Pipeline →](https://github.com/12mv2/workshop-rag-3-production)**  
+Combine vector search + LLMs into a production-ready RAG system using Pinecone.
 
 ---
 
 ## 🔧 Troubleshooting
+
+**No plot showing?**
+```bash
+# On WSL/Linux without display: 
+export DISPLAY=:0
+```
 
 **Import errors?**
 ```bash
 pip install -r requirements.txt
 ```
 
-**Missing --weights argument?**
+**Want to see the raw data?**
 ```bash
-# This will error:
-python app.py --plot weighted
-
-# Do this instead:
-python app.py --plot weighted --weights 1.0 1.0 1.0
+cat data/runners.json
 ```
-
-**No plots showing?**
-```bash
-# On WSL/Linux without display
-export DISPLAY=:0
-# Or check your matplotlib backend
-python -c "import matplotlib; print(matplotlib.get_backend())"
-```
-
-**Pinecone errors?**
-- Check your API key in `.env`
-- Verify your Pinecone index exists
-- Ensure you're using the correct environment name
 
 ---
 
-## 🗣️ License
+## 🔬 Advanced (Optional)
 
-MIT License — use this project for demos, learning, or expanding into real vector DB integrations later!
+<details>
+<summary><b>Click to expand advanced options</b></summary>
+
+### View Raw (Unnormalized) Vectors
+
+```bash
+python app.py --plot raw
+```
+
+See why normalization is necessary - cadence dominates everything!
+
+### Custom Feature Weighting
+
+```bash
+# Make cadence 3x more important
+python app.py --plot weighted --weights 3.0 1.0 0.1
+
+# Make heel strike dominant
+python app.py --plot weighted --weights 0.5 5.0 0.5
+```
+
+Different weights = different definitions of "similarity"!
+
+### Add Your Own Data
+
+Edit `data/runners.json`:
+
+```json
+{
+  "name": "Your Name",
+  "type": "human",
+  "cadence": 175,
+  "heel_strike":  0.3,
+  "vertical_oscillation": 7.5,
+  "description": "Your running style"
+}
+```
+
+Then run `python app.py` to see where you cluster!
+
+### Explore the Code
+
+- `app.py` - Main visualization logic
+- `data/runners.json` - The dataset
+- `search/normalize.py` - Normalization utilities
+- `db/vector_db.py` - Simple in-memory vector database
+
+</details>
+
+---
+
+## 📜 License
+
+MIT License - freely use, modify, and distribute. 
+
+---
+
+## 🌟 Ready for Part 2? 
+
+⭐ **Star this repo** then continue to **[Part 2: RAG Basics →](https://github.com/12mv2/workshop-rag-2-retrieval)** to build your first RAG system!
+
+Questions? Open an issue - contributions welcome!  🚀
