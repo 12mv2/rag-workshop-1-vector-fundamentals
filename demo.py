@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import json
 import math
+import os
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
@@ -11,8 +12,9 @@ def normalize_vector(vec):
     mag = math.sqrt(sum(x**2 for x in vec))
     return [x/mag for x in vec] if mag > 0 else vec
 
-# Load data
-with open('data/runners.json') as f:
+# Load data (use path relative to this script)
+script_dir = os.path.dirname(os.path.abspath(__file__))
+with open(os.path.join(script_dir, 'data/runners.json')) as f:
     data = json.load(f)
 
 # Create vectors
