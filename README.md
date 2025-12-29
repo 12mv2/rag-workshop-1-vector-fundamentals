@@ -14,7 +14,7 @@ python demo.py
 | **Phase** | **Action** | **Outcome** | **Time** |
 |-----------|------------|-------------|----------|
 | **Setup** | Run commands above | 3D plot opens automatically | 2 min |
-| **See It** | Watch: Marathoners cluster (blue), Bolt nearby, Kangaroo isolated | Patterns emerged from math alone | 3 min |
+| **See It** | Watch: Marathoners cluster together, Cheetah nearby, outliers isolated | Patterns emerged from math alone | 3 min |
 | **Concept** | Similar numbers → Similar vectors → Automatic clustering | No manual rules needed | 5 min |
 | **Your Turn** | Edit `data/runners.json`: Change "Cheetah" cadence from 250 to 180 | Watch it move closer to marathoners | 10 min |
 | **Learned** | Similarity = distance in space (foundation of RAG) | ✅ You get vectors | 2 min |
@@ -82,4 +82,4 @@ Fork it first:
 
 ---
 
-**Questions?** [GitHub Discussions](https://github.com/12mv2/rag-workshop-1-vector-fundamentals/discussions)
+**Questions?** Open an issue on [GitHub](https://github.com/12mv2/rag-workshop-1-vector-fundamentals/issues)
